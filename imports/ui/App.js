@@ -3,7 +3,7 @@ import Task from './Task.js';
 import { Tasks } from '../api/tasks.js';
 import { withTracker } from 'meteor/react-meteor-data';
 import ReactDOM from 'react-dom';
-
+import AccountsUIWrapper from './accountsUIWrapper.js';
 // App component - represents the whole app
 
 class App extends Component {
@@ -45,6 +45,8 @@ class App extends Component {
     Tasks.insert({
       text,
       createdAt: new Date(), // current time
+      owner:Meteor.userId(),
+      username:Meteor.user().username
     });
     // Clear form
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
@@ -76,12 +78,16 @@ class App extends Component {
             Hide Completed Tasks
           </label>
 
-          <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
-            <input type="text"
-              ref="textInput"
-              disabled={this.state.disableInput}
-              placeholder={this.state.placeholderTxt}/>
-          </form>
+          <AccountsUIWrapper />
+
+          { this.props.currentUser ? //IF USER IS LOGGED IN
+            <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
+              <input type="text"
+                ref="textInput"
+                disabled={this.state.disableInput}
+                placeholder={this.state.placeholderTxt}/>
+            </form> : ''
+          }
         </header>
         <ul>
           {this.renderTasks()}
@@ -95,5 +101,6 @@ export default withTracker(()=> {
   return {
     tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
     inCompleteTasks:Tasks.find({checked:{$ne:true}}).count(),
+    currentUser: Meteor.user(),
   };
 })(App);
