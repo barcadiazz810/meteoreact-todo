@@ -13,6 +13,8 @@ class App extends Component {
 
     this.state={
       hideCompleted:false,
+      disableInput:true,
+      placeholderTxt:"Loading Tasks",
     }
   }
 
@@ -23,6 +25,17 @@ class App extends Component {
     })
   }
   // HIDE COMPLETED TASKS
+
+
+
+  componentWillReceiveProps()
+  {
+    this.setState({
+      disableInput:false,
+      placeholderTxt:"Add a new task",
+    })
+  }
+
 
   handleSubmit(event) {
     event.preventDefault();
@@ -48,6 +61,7 @@ class App extends Component {
     ));
   }
 
+
   render() {
     return (
       <div className="container">
@@ -62,11 +76,11 @@ class App extends Component {
             Hide Completed Tasks
           </label>
 
-
           <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
             <input type="text"
               ref="textInput"
-              placeholder="Type to add new tasks"/>
+              disabled={this.state.disableInput}
+              placeholder={this.state.placeholderTxt}/>
           </form>
         </header>
         <ul>
