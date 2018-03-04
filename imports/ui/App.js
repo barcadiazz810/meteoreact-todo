@@ -83,7 +83,3 @@ export default withTracker(()=> {
     inCompleteTasks:Tasks.find({checked:{$ne:true}}).count(),
   };
 })(App);
-
-/*
-MONGO_URL='mongodb://cluster-Admin:ClusterAdmin2895@cluster0-shard-00-00-u33j0.mongodb.net:27017,cluster0-shard-00-01-u33j0.mongodb.net:27017,cluster0-shard-00-02-u33j0.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin/meteorReactTodos' meteor
-*/
