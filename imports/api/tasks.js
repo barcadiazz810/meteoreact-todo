@@ -21,11 +21,19 @@ Meteor.methods({
   },
 
   'tasks.remove'(taskId){
+    if(!this.userId)
+    {
+      throw new Meteor.Error('Not authorised');
+    }
     check(taskId,String);
     Tasks.remove(taskId);
   },
 
   'tasks.setChecked'(taskId,setChecked){
+    if(!this.userId)
+    {
+      throw new Meteor.Error('Not authorised');
+    }
     check(taskId, String);
     check(setChecked, Boolean);
     Tasks.update(taskId, {
