@@ -3,11 +3,24 @@ import { Tasks } from '../api/tasks.js';
 
 export default class Task extends Component {
   toggleChecked() {
-    Meteor.call('tasks.setChecked', this.props.task._id, !this.props.task.checked);
+    try{
+      Meteor.call('tasks.setChecked', this.props.task._id, !this.props.task.checked,(error,result)=>{
+        if(error){
+          alert(error.error);
+        }
+      });
+    }catch(e)
+    {
+    }
+
   }
 
   deleteThisTask() {
-    Meteor.call('tasks.remove', this.props.task._id);
+    Meteor.call('tasks.remove', this.props.task._id,(error,result)=>{
+      if(error){
+        alert(error.error);
+      }
+    });
   }
 
   render() {

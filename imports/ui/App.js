@@ -41,7 +41,11 @@ class App extends Component {
     event.preventDefault();
     // Find the text field via the React ref
     const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
-    Meteor.call('tasks.insert', text);
+    Meteor.call('tasks.insert', text,function(error,result){
+      if(error){
+        alert(error.error);
+      }
+    });
     // Clear form
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
   }
@@ -78,6 +82,7 @@ class App extends Component {
             <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
               <input type="text"
                 ref="textInput"
+                required
                 disabled={this.state.disableInput}
                 placeholder={this.state.placeholderTxt}/>
             </form> : ''
